@@ -1,0 +1,29 @@
+[
+  {
+    "slug": "shinoprovody",
+    "number": "01",
+    "name": "Шинопроводы",
+    "shortName": "Троллейные шинопроводы",
+    "description": "Закрытые и открытые системы токоподвода AKAPP-STEMMANN для кранов, складов, конвейеров и тяжёлого промышленного оборудования.",
+    "range": "35–2200 А",
+    "image": "/images/catalogs/multiconductor.jpg"
+  },
+  {
+    "slug": "festonnye-sistemy",
+    "number": "02",
+    "name": "Фестонные системы",
+    "shortName": "Кабельные тележки",
+    "description": "Системы перемещения плоских и круглых кабелей, шлангов и трубопроводов для подвижных механизмов.",
+    "range": "до 120 м/мин",
+    "image": "/images/catalogs/festoon.jpg"
+  },
+  {
+    "slug": "kabelnye-barabany",
+    "number": "03",
+    "name": "Кабельные барабаны",
+    "shortName": "Пружинные барабаны",
+    "description": "Пружинные кабельные барабаны для питания и управления мостовыми, портальными и портовыми кранами, талями и тележками.",
+    "range": "до 200 А · IP66",
+    "image": "/images/catalogs/av.jpg"
+  }
+]

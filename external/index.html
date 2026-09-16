@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Akkap-Stemmann — Energy Transfer Systems for Cranes & Heavy Industry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --black:#0a0a0b; --ink:#101114; --panel:#141518; --panel2:#121316;
+  --paper:#f3f3f1; --paper2:#ebebe8;
+  --line-d:rgba(255,255,255,.13); --line-l:rgba(16,17,20,.14);
+  --silver:#c9ced6; --silver-d:#8b919b; --silver-t:#a7abb3;
+  --orange:#ff5f00; --orange2:#ff7a1f; --orange-ink:#e04f00;
+  --tx-l:#3c3f45; --tx-d:#a7abb3;
+  --fd:'Archivo',sans-serif; --fm:'JetBrains Mono',monospace;
+  --wrap:1400px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{font-family:var(--fd);background:var(--black);color:#fff;font-size:14.5px;line-height:1.55;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body.lock{overflow:hidden}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;background:none;border:0;color:inherit}
+::selection{background:var(--orange);color:#0a0a0b}
+
+.wrap{max-width:var(--wrap);margin:0 auto;padding:0 44px}
+.mono{font-family:var(--fm)}
+.num{font-variant-numeric:tabular-nums}
+
+/* texture (noise + blueprint grid) */
+.grain::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.05;z-index:1;
+ background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.th-light{background:var(--paper);color:var(--ink);position:relative}
+.th-light::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+ background-image:linear-gradient(var(--line-l) 1px,transparent 1px),linear-gradient(90deg,var(--line-l) 1px,transparent 1px);
+ background-size:56px 56px;mask-image:radial-gradient(120% 100% at 50% 0,#000 30%,transparent 90%)}
+.th-light>*{position:relative;z-index:2}
+
+/* global hairline grid overlay */
+.gl{position:fixed;inset:0;pointer-events:none;z-index:70;color:rgba(128,128,128,.28)}
+.gl i{position:absolute;top:0;bottom:0;width:1px;background:currentColor}
+.gl i:nth-child(1){left:25%}.gl i:nth-child(2){left:50%}.gl i:nth-child(3){left:75%}
+.gl b{position:absolute;width:5px;height:5px;background:var(--orange);opacity:.9}
+.gl b:nth-of-type(1){left:25%;transform:translate(-2px,70px)}
+.gl b:nth-of-type(2){left:50%;transform:translate(-2px,70px)}
+.gl b:nth-of-type(3){left:75%;transform:translate(-2px,70px)}
+@media(max-width:860px){.gl{display:none}}
+
+/* section corner ticks */
+.sec{position:relative;padding:96px 0}
+.sec::before,.sec::after{content:"+";position:absolute;top:10px;font:500 13px var(--fm);color:currentColor;opacity:.3;z-index:3}
+.sec::before{left:14px}.sec::after{right:14px}
+
+/* eyebrows & headings */
+.eyebrow{display:flex;align-items:center;gap:12px;font:500 11px var(--fm);letter-spacing:.2em;text-transform:uppercase;color:var(--silver-d);margin-bottom:22px}
+.th-light .eyebrow{color:#77797e}
+.eyebrow b{color:var(--orange);font-weight:700}
+.eyebrow::after{content:"";height:1px;width:56px;background:currentColor;opacity:.35}
+h1,h2,h3{letter-spacing:-.03em}
+.h2{font-size:clamp(32px,4.4vw,54px);font-weight:700;line-height:1.04}
+.metal{background:linear-gradient(180deg,#f4f6f9 10%,#9aa3ad 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sec-head{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:end;margin-bottom:52px}
+.sec-head p{color:var(--tx-d);font-size:14px;max-width:44ch}
+.th-light .sec-head p{color:var(--tx-l)}
+
+/* buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;height:46px;padding:0 24px;border-radius:6px;font-size:13.5px;font-weight:600;letter-spacing:.01em;transition:.22s;border:1px solid transparent;white-space:nowrap}
+.btn svg{width:16px;height:16px}
+.btn-p{background:var(--orange);color:#0a0a0b}
+.btn-p:hover{background:var(--orange2);transform:translateY(-2px);box-shadow:0 8px 28px rgba(255,95,0,.35)}
+.btn-g{border-color:rgba(255,255,255,.22);color:#fff}
+.btn-g:hover{border-color:var(--orange);color:var(--orange)}
+.th-light .btn-g{border-color:rgba(16,17,20,.25);color:var(--ink)}
+.th-light .btn-g:hover{border-color:var(--orange-ink);color:var(--orange-ink)}
+.btn-sm{height:40px;padding:0 18px;font-size:12.5px}
+
+/* ============ NAV ============ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:72px;display:flex;align-items:center;transition:.3s;border-bottom:1px solid transparent}
+.nav.sc{background:rgba(10,10,11,.88);backdrop-filter:blur(14px);border-bottom-color:var(--line-d)}
+.nav .wrap{width:100%;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:11px;font-weight:700;font-size:16.5px;letter-spacing:-.01em}
+.logo svg{width:24px;height:24px;color:#fff}
+.logo em{font-style:normal;color:var(--silver-d);font-weight:500}
+.nav-links{display:flex;gap:6px;margin-left:auto}
+.nav-links a{padding:9px 14px;font-size:13.5px;font-weight:500;color:var(--silver);border-radius:6px;position:relative;transition:.2s;display:inline-flex;align-items:center;gap:5px}
+.nav-links a svg{width:12px;height:12px}
+.nav-links a:hover,.nav-links a.on{color:#fff;background:rgba(255,255,255,.06)}
+.nav-links a.on::after{content:"";position:absolute;left:14px;right:14px;bottom:3px;height:2px;background:var(--orange);border-radius:2px}
+.tele{display:flex;align-items:center;gap:16px;font:500 11px var(--fm);color:var(--silver-d);letter-spacing:.04em;border-left:1px solid var(--line-d);padding-left:20px}
+.tele .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:blink 1.6s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+.nav-cta{margin-left:6px}
+.burger{display:none;width:44px;height:44px;border:1px solid var(--line-d);border-radius:6px;align-items:center;justify-content:center}
+.burger svg{width:20px;height:20px}
+@media(max-width:1240px){.tele{display:none}}
+@media(max-width:1000px){.nav-links,.nav-cta{display:none}.burger{display:flex}}
+
+/* mobile nav */
+.mnav{position:fixed;inset:0;z-index:200;background:rgba(10,10,11,.97);backdrop-filter:blur(10px);display:flex;flex-direction:column;padding:28px 26px;opacity:0;pointer-events:none;transition:.3s}
+.mnav.open{opacity:1;pointer-events:auto}
+.mnav-top{display:flex;justify-content:space-between;align-items:center}
+.mnav a.big{font-size:clamp(30px,8vw,44px);font-weight:700;letter-spacing:-.03em;padding:14px 0;border-bottom:1px solid var(--line-d);display:flex;justify-content:space-between;align-items:center;transform:translateY(20px);opacity:0;transition:.45s cubic-bezier(.2,.7,.2,1)}
+.mnav.open a.big{transform:none;opacity:1}
+.mnav a.big span{font:500 11px var(--fm);color:var(--orange)}
+.mnav-bot{margin-top:auto;display:grid;gap:10px;font:500 12px var(--fm);color:var(--silver-d)}
+.mnav-bot b{color:var(--silver);font-weight:500}
+
+/* ============ HERO ============ */
+.hero{position:relative;min-height:100svh;display:flex;flex-direction:column;overflow:hidden;isolation:isolate}
+.hero-bg{position:absolute;inset:0;width:100%;height:120%;object-fit:cover;filter:grayscale(1) contrast(1.25) brightness(.62);z-index:-2;will-change:transform}
+.hero .shade{position:absolute;inset:0;z-index:-1;background:linear-gradient(100deg,rgba(10,10,11,.92) 20%,rgba(10,10,11,.55) 55%,rgba(10,10,11,.85)),linear-gradient(180deg,rgba(10,10,11,.5),rgba(10,10,11,.2) 40%,rgba(10,10,11,.95))}
+.spot{position:absolute;inset:0;z-index:0;pointer-events:none;background:radial-gradient(640px at var(--sx,70%) var(--sy,40%),rgba(255,95,0,.13),transparent 62%)}
+.hero-in{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;justify-content:center;padding-top:110px;padding-bottom:36px}
+.chip{display:inline-flex;align-items:center;gap:9px;font:500 11px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:var(--silver);border:1px solid var(--line-d);border-radius:100px;padding:8px 15px;width:max-content;background:rgba(10,10,11,.5)}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);animation:blink 1.6s infinite}
+.hero h1{font-size:clamp(52px,8.6vw,124px);font-weight:700;line-height:.99;margin:26px 0 26px;letter-spacing:-.035em}
+.hero h1 .ln{display:block;overflow:hidden}
+.hero h1 .ln>span{display:inline-block;transform:translateY(112%);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards;animation-delay:var(--d,0s)}
+@keyframes rise{to{transform:none}}
+.hero h1 .acc{color:var(--orange)}
+.hero-sub{max-width:56ch;color:var(--silver-t);font-size:15.5px}
+.hero-sub b{color:#fff;font-weight:600}
+.hero-cta{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap}
+.hero-strip{position:relative;z-index:2;border-top:1px solid var(--line-d);background:rgba(10,10,11,.45);backdrop-filter:blur(6px)}
+.hero-strip .wrap{display:flex;align-items:center;gap:40px;height:88px}
+.tb-label{font:500 11px var(--fm);letter-spacing:.18em;text-transform:uppercase;color:var(--silver-d);white-space:nowrap}
+.tb-logos{display:flex;gap:44px;align-items:center;flex-wrap:wrap}
+.wm{display:flex;align-items:center;gap:9px;font-weight:700;font-size:15px;color:var(--silver);letter-spacing:.02em;transition:.2s}
+.wm i{width:8px;height:8px;background:currentColor;flex:none}
+.wm:hover{color:#fff}
+.wm.thin{font-weight:500;letter-spacing:.22em;font-size:13px}
+.wm.mono2{font-family:var(--fm);font-weight:700;font-size:13.5px}
+.tb-note{margin-left:auto;font:500 11px var(--fm);color:var(--silver-d);letter-spacing:.08em;text-align:right}
+.side-tag{position:absolute;right:26px;top:50%;transform:rotate(90deg) translateX(-50%);transform-origin:right top;font:500 10px var(--fm);letter-spacing:.34em;color:rgba(255,255,255,.34);z-index:2;white-space:nowrap}
+@media(max-width:1100px){.side-tag{display:none}}
+@media(max-width:860px){.hero-strip .wrap{height:auto;padding:18px 0;gap:16px;flex-wrap:wrap}.tb-note{margin-left:0;text-align:left}}
+
+/* conductor pulse divider */
+.conductor{position:relative;height:1px;background:var(--line-d);overflow:hidden}
+.conductor b{position:absolute;top:-1px;height:3px;width:140px;background:linear-gradient(90deg,transparent,var(--orange),transparent);animation:rail 3.4s linear infinite}
+@keyframes rail{from{left:-140px}to{left:100%}}
+
+/* ============ STATS ============ */
+.stats{background:#0d0e10}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:44px 34px;border-left:1px solid var(--line-d)}
+.stat:first-child{border-left:0}
+.stat .v{font:700 clamp(34px,3.4vw,50px)/1 var(--fm);letter-spacing:-.03em;color:#fff}
+.stat .v em{font-style:normal;color:var(--orange);font-size:.6em;font-weight:700}
+.stat .l{margin-top:12px;font-size:12.5px;color:var(--silver-d);letter-spacing:.02em}
+@media(max-width:900px){.stats .wrap{grid-template-columns:1fr 1fr}.stat{padding:30px 24px}.stat:nth-child(3){border-left:0}}
+
+/* ============ PRODUCTS ============ */
+.cat-wrap{display:grid;grid-template-columns:400px 1fr;border:1px solid var(--line-l);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.55)}
+.cat-list{border-right:1px solid var(--line-l);background:var(--paper2);position:relative}
+.cat-stick{position:sticky;top:96px}
+.cat-head{padding:26px 24px 18px;border-bottom:1px solid var(--line-l)}
+.cat-head .mono{font-size:11px;letter-spacing:.16em;color:#77797e;text-transform:uppercase}
+.cat-btn{width:100%;text-align:left;padding:22px 24px;border-bottom:1px solid var(--line-l);display:grid;grid-template-columns:40px 1fr auto;gap:2px 14px;align-items:center;position:relative;transition:.2s}
+.cat-btn:last-child{border-bottom:0}
+.cat-btn .idx{font:700 12px var(--fm);color:#9a9da3;transition:.2s}
+.cat-btn .t{font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--ink)}
+.cat-btn .s{grid-column:2;font:500 11px var(--fm);color:#83868c;letter-spacing:.02em}
+.cat-btn svg{grid-row:1/4;width:18px;height:18px;color:#9a9da3;opacity:0;transform:translateX(-6px);transition:.25s}
+.cat-btn::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--orange);transform:scaleY(0);transition:.25s;transform-origin:top}
+.cat-btn:hover{background:rgba(255,255,255,.7)}
+.cat-btn.act{background:#fff}
+.cat-btn.act::before{transform:scaleY(1)}
+.cat-btn.act .idx{color:var(--orange-ink)}
+.cat-btn.act svg{opacity:1;transform:none;color:var(--orange-ink)}
+.cat-count{padding:20px 24px;font:500 11px var(--fm);color:#83868c;letter-spacing:.14em}
+.cat-panel{display:grid;grid-template-columns:440px 1fr;background:#fff;transition:.24s;min-height:560px}
+.cat-panel.swap{opacity:0;transform:translateY(10px)}
+.cp-img{position:relative;overflow:hidden;min-height:280px}
+.cp-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.18) brightness(.94);transition:transform .6s}
+.cat-panel:hover .cp-img img{transform:scale(1.04)}
+.cp-code{position:absolute;top:16px;left:16px;font:700 10.5px var(--fm);letter-spacing:.16em;background:rgba(10,10,11,.88);color:var(--silver);padding:7px 11px;border-left:2px solid var(--orange)}
+.cp-img .cap{position:absolute;bottom:14px;left:16px;right:16px;font:500 10px var(--fm);color:rgba(255,255,255,.85);letter-spacing:.1em;text-shadow:0 1px 8px rgba(0,0,0,.8)}
+.cp-body{padding:30px 34px 28px;display:flex;flex-direction:column}
+.cp-body h3{font-size:27px;font-weight:700;letter-spacing:-.025em}
+.cp-body .range{font:500 11.5px var(--fm);color:var(--orange-ink);letter-spacing:.08em;margin:7px 0 12px}
+.cp-body .desc{color:var(--tx-l);font-size:13.5px;max-width:58ch}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 20px}
+.tag{font:500 10.5px var(--fm);letter-spacing:.06em;border:1px solid rgba(16,17,20,.2);border-radius:4px;padding:6px 10px;color:#4a4d53;background:var(--paper)}
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line-l);border-radius:8px}
+table{width:100%;border-collapse:collapse;white-space:nowrap}
+th{font:600 10px var(--fm);letter-spacing:.14em;text-transform:uppercase;text-align:left;color:#8a8d93;padding:11px 14px;background:var(--paper2);border-bottom:1px solid var(--line-l)}
+td{padding:12px 14px;font-size:12.5px;border-bottom:1px solid rgba(16,17,20,.07);color:var(--tx-l)}
+tr:last-child td{border-bottom:0}
+tbody tr{transition:.15s}
+tbody tr:hover{background:rgba(255,95,0,.05)}
+td.m{font:700 12.5px var(--fm);color:var(--ink)}
+td.m b{color:var(--orange-ink);font-weight:700}
+.cp-note{margin-top:auto;padding-top:16px;font:500 11px var(--fm);color:#83868c;letter-spacing:.02em}
+.cp-actions{display:flex;gap:12px;margin-top:16px;flex-wrap:wrap}
+@media(max-width:1160px){.cat-panel{grid-template-columns:1fr}.cp-img{min-height:240px}.cat-wrap{grid-template-columns:1fr}.cat-list{border-right:0;border-bottom:1px solid var(--line-l)}.cat-stick{position:static;display:flex;overflow-x:auto}.cat-head,.cat-count{display:none}.cat-btn{min-width:260px;border-bottom:0;border-right:1px solid var(--line-l)}}
+
+/* ============ TRUST (dark) ============ */
+.trust{background:var(--black);color:#fff}
+.trust .sec-head p{color:var(--silver-t)}
+.marq{overflow:hidden;border-top:1px solid var(--line-d);border-bottom:1px solid var(--line-d);padding:26px 0;position:relative}
+.marq-track{display:flex;gap:80px;width:max-content;animation:marq 30s linear infinite}
+.marq:hover .marq-track{animation-play-state:paused}
+@keyframes marq{to{transform:translateX(-50%)}}
+.marq .wm{font-size:19px;color:var(--silver-d)}
+.marq .wm:hover{color:#fff}
+.marq .wm i{width:9px;height:9px}
+.cert-row{display:flex;flex-wrap:wrap;gap:12px;margin:38px 0 8px}
+.cert{display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line-d);border-radius:6px;padding:11px 15px;font:500 11.5px var(--fm);letter-spacing:.06em;color:var(--silver);transition:.2s;background:rgba(255,255,255,.02)}
+.cert svg{width:15px;height:15px;color:var(--orange)}
+.cert:hover{border-color:var(--orange);color:#fff;transform:translateY(-2px)}
+.cert-note{font:500 11px var(--fm);color:var(--silver-d);letter-spacing:.04em;margin-top:12px}
+.cases{margin-top:44px}
+.case{display:grid;grid-template-columns:120px 1fr 420px 56px;gap:28px;align-items:center;padding:28px 0;border-top:1px solid var(--line-d);transition:.2s;position:relative}
+.case:last-child{border-bottom:1px solid var(--line-d)}
+.case:hover{background:rgba(255,255,255,.025)}
+.case .ctag{font:700 10.5px var(--fm);letter-spacing:.18em;color:var(--orange)}
+.case h4{font-size:18px;font-weight:700;letter-spacing:-.015em}
+.case .cd{color:var(--silver-d);font-size:12.5px;margin-top:5px;max-width:52ch}
+.cfig{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cf .v{font:700 24px var(--fm);letter-spacing:-.02em;color:#fff}
+.cf .v em{font-style:normal;color:var(--orange);font-size:.72em}
+.cf .l{font:500 9.5px var(--fm);letter-spacing:.12em;text-transform:uppercase;color:var(--silver-d);margin-top:4px}
+.case .go{width:46px;height:46px;border:1px solid var(--line-d);border-radius:8px;display:flex;align-items:center;justify-content:center;transition:.22s}
+.case .go svg{width:17px;height:17px}
+.case:hover .go{background:var(--orange);border-color:var(--orange);color:#0a0a0b;transform:rotate(45deg)}
+@media(max-width:1080px){.case{grid-template-columns:1fr;gap:16px}.case .go{display:none}.cfig{max-width:520px}}
+
+/* ============ ADVANTAGES ============ */
+.why .sec-head{margin-bottom:30px}
+.adv{border-top:1px solid var(--line-l)}
+.adv-row{display:grid;grid-template-columns:64px 64px 1fr 300px;gap:24px;align-items:center;padding:30px 0;border-bottom:1px solid var(--line-l);position:relative;transition:.2s}
+.adv-row .rail{position:absolute;left:-16px;top:0;bottom:0;width:3px;background:var(--orange);transform:scaleY(0);transition:.3s;transform-origin:top}
+.adv-row:hover .rail{transform:scaleY(1)}
+.adv-row .n{font:700 13px var(--fm);color:#9a9da3}
+.adv-row .ic{width:52px;height:52px;border:1px solid rgba(16,17,20,.22);border-radius:10px;display:flex;align-items:center;justify-content:center;transition:.25s;color:var(--ink)}
+.adv-row .ic svg{width:22px;height:22px}
+.adv-row:hover .ic{background:var(--orange);border-color:var(--orange);color:#0a0a0b;transform:rotate(-6deg)}
+.adv-row h3{font-size:20px;font-weight:700;letter-spacing:-.02em}
+.adv-row p{color:var(--tx-l);font-size:13px;margin-top:6px;max-width:58ch}
+.adv-row .fact{font:500 11px var(--fm);color:#6d7076;letter-spacing:.04em;border-left:1px solid var(--line-l);padding-left:22px;line-height:1.7}
+.adv-row .fact b{display:block;color:var(--orange-ink);font-weight:700;font-size:13px}
+@media(max-width:980px){.adv-row{grid-template-columns:52px 1fr;gap:8px 18px}.adv-row .n{display:none}.adv-row .fact{border-left:0;padding-left:0;grid-column:2}}
+
+/* ============ FAQ ============ */
+.faq-sec{background:var(--paper2)}
+.faq-grid{display:grid;grid-template-columns:420px 1fr;gap:64px;align-items:start}
+.faq-left{position:sticky;top:110px}
+.faq-left p{color:var(--tx-l);font-size:13.5px;margin:18px 0 24px;max-width:38ch}
+.faq-item{border-top:1px solid var(--line-l)}
+.faq-item:last-child{border-bottom:1px solid var(--line-l)}
+.faq-q{width:100%;display:flex;align-items:center;gap:20px;text-align:left;padding:22px 4px;transition:.2s}
+.faq-q .qn{font:700 11px var(--fm);color:#9a9da3;transition:.2s;flex:none}
+.faq-q h4{font-size:16.5px;font-weight:600;letter-spacing:-.01em;flex:1;color:var(--ink)}
+.faq-q .chev{width:34px;height:34px;border:1px solid rgba(16,17,20,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;transition:.3s}
+.faq-q .chev svg{width:15px;height:15px}
+.faq-item.open .qn{color:var(--orange-ink)}
+.faq-item.open .chev{background:var(--orange);border-color:var(--orange);color:#0a0a0b;transform:rotate(180deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.2,.7,.2,1)}
+.faq-a p{padding:0 44px 24px 55px;color:var(--tx-l);font-size:13.5px;max-width:70ch}
+@media(max-width:980px){.faq-grid{grid-template-columns:1fr;gap:30px}.faq-left{position:static}.faq-a p{padding-left:4px}}
+
+/* ============ CTA ============ */
+.cta{background:var(--black);color:#fff;overflow:hidden;isolation:isolate}
+.cta-bg{position:absolute;inset:0;z-index:-1;opacity:.16}
+.cta-bg img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.3)}
+.cta-grid{display:grid;grid-template-columns:5fr 6fr;gap:72px;align-items:start}
+.cta .h2{font-size:clamp(32px,4vw,50px)}
+.c-item{display:flex;gap:16px;padding:16px 0;border-top:1px solid var(--line-d);align-items:flex-start}
+.c-item svg{width:17px;height:17px;color:var(--orange);flex:none;margin-top:2px}
+.c-item .k{font:500 10px var(--fm);letter-spacing:.16em;text-transform:uppercase;color:var(--silver-d)}
+.c-item .v{font:500 13.5px var(--fm);color:#e8eaee;margin-top:3px;letter-spacing:.01em}
+.connect{margin-top:34px;border:1px solid var(--line-d);border-radius:10px;padding:22px;background:rgba(255,255,255,.03)}
+.connect .k{font:700 10.5px var(--fm);letter-spacing:.2em;color:var(--orange)}
+.connect h5{font-size:16px;font-weight:700;margin:8px 0 4px}
+.connect p{color:var(--silver-d);font-size:12px}
+.conn-form{display:flex;margin-top:14px;gap:8px}
+.conn-form input{flex:1;height:42px;background:rgba(255,255,255,.05);border:1px solid var(--line-d);border-radius:6px;padding:0 14px;color:#fff;font:500 12.5px var(--fm);outline:none;transition:.2s}
+.conn-form input:focus{border-color:var(--orange)}
+.conn-form button{width:42px;height:42px;border-radius:6px;background:var(--orange);color:#0a0a0b;display:flex;align-items:center;justify-content:center;transition:.2s;flex:none}
+.conn-form button svg{width:16px;height:16px}
+.conn-form button:hover{background:var(--orange2)}
+.form-card{background:var(--panel2);border:1px solid var(--line-d);border-radius:12px;padding:30px;position:relative}
+.form-card::before{content:"RFQ — REQUEST FOR QUOTATION";position:absolute;top:-9px;left:26px;background:var(--orange);color:#0a0a0b;font:700 9.5px var(--fm);letter-spacing:.18em;padding:4px 10px;border-radius:3px}
+.f-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.f-field{margin-bottom:14px}
+.f-field label{display:block;font:500 10px var(--fm);letter-spacing:.14em;text-transform:uppercase;color:var(--silver-d);margin-bottom:7px}
+.f-field label b{color:var(--orange)}
+.f-field input,.f-field select,.f-field textarea{width:100%;background:rgba(255,255,255,.045);border:1px solid var(--line-d);border-radius:6px;padding:12px 13px;color:#fff;font:500 13px var(--fm);outline:none;transition:.2s}
+.f-field textarea{resize:vertical;min-height:88px;font-family:var(--fd);font-weight:500}
+.f-field input:focus,.f-field select:focus,.f-field textarea:focus{border-color:var(--orange);background:rgba(255,95,0,.05)}
+.f-field.err input,.f-field.err select,.f-field.err textarea{border-color:var(--orange);box-shadow:0 0 0 3px rgba(255,95,0,.15)}
+.f-field .emsg{display:none;font:500 10px var(--fm);color:var(--orange);margin-top:5px}
+.f-field.err .emsg{display:block}
+.sel{position:relative}
+.sel::after{content:"";position:absolute;right:15px;top:50%;width:7px;height:7px;border-right:1.6px solid var(--silver-d);border-bottom:1.6px solid var(--silver-d);transform:translateY(-70%) rotate(45deg);pointer-events:none}
+.sel select{appearance:none}
+.f-foot{display:flex;align-items:center;gap:16px;margin-top:6px;flex-wrap:wrap}
+.f-foot .hint{font:500 10.5px var(--fm);color:var(--silver-d);letter-spacing:.03em}
+.spinner{width:16px;height:16px;border:2px solid rgba(10,10,11,.3);border-top-color:#0a0a0b;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn.loading .spinner{display:block}
+.btn.loading svg{display:none}
+.f-success{text-align:center;padding:44px 20px}
+.f-success .ok{width:66px;height:66px;border-radius:50%;background:rgba(255,95,0,.14);border:1px solid var(--orange);color:var(--orange);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.f-success .ok svg{width:28px;height:28px}
+.f-success h4{font-size:22px;font-weight:700}
+.f-success .rid{font:700 12.5px var(--fm);color:var(--orange);letter-spacing:.12em;margin:10px 0 8px}
+.f-success p{color:var(--silver-d);font-size:13px;max-width:40ch;margin:0 auto}
+.f-success button{margin-top:22px;color:var(--silver);font:600 12.5px var(--fm);letter-spacing:.06em;border-bottom:1px solid var(--silver-d);padding-bottom:2px;transition:.2s}
+.f-success button:hover{color:var(--orange);border-color:var(--orange)}
+@media(max-width:1080px){.cta-grid{grid-template-columns:1fr;gap:44px}}
+@media(max-width:640px){.f-row{grid-template-columns:1fr}}
+
+/* ============ FOOTER ============ */
+footer{background:#070708;border-top:1px solid var(--line-d);color:var(--silver-d)}
+.foot-brand{padding:56px 0 40px;display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:40px;border-bottom:1px solid var(--line-d)}
+.foot-brand .fwm{font-size:30px;font-weight:800;letter-spacing:-.03em;color:#fff;line-height:1.1}
+.foot-brand .fwm span{color:var(--orange)}
+.foot-brand .fp{font-size:12px;margin-top:14px;max-width:34ch}
+.fcol h6{font:700 10.5px var(--fm);letter-spacing:.18em;text-transform:uppercase;color:var(--silver);margin-bottom:16px}
+.fcol a{display:block;font-size:12.5px;padding:5px 0;transition:.2s;color:var(--silver-d)}
+.fcol a:hover{color:var(--orange);transform:translateX(4px)}
+.foot-bot{display:flex;align-items:center;gap:24px;padding:22px 0;font:500 11px var(--fm);letter-spacing:.04em;flex-wrap:wrap}
+.foot-bot .right{margin-left:auto;display:flex;gap:20px}
+.foot-bot a:hover{color:var(--orange)}
+@media(max-width:980px){.foot-brand{grid-template-columns:1fr 1fr}}
+
+/* toasts */
+#toasts{position:fixed;right:22px;bottom:22px;z-index:300;display:flex;flex-direction:column;gap:10px}
+.toast{display:flex;align-items:center;gap:12px;background:#151619;border:1px solid var(--line-d);border-left:3px solid var(--orange);border-radius:8px;padding:13px 18px;font:500 12.5px var(--fm);color:#e8eaee;box-shadow:0 14px 40px rgba(0,0,0,.5);transform:translateX(30px);opacity:0;transition:.35s cubic-bezier(.2,.7,.2,1);max-width:360px}
+.toast.on{transform:none;opacity:1}
+.toast svg{width:16px;height:16px;color:var(--orange);flex:none}
+
+/* back to top */
+.totop{position:fixed;left:22px;bottom:22px;z-index:90;width:46px;height:46px;border:1px solid var(--line-d);background:rgba(10,10,11,.8);backdrop-filter:blur(8px);border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--silver);opacity:0;pointer-events:none;transition:.3s}
+.totop.show{opacity:1;pointer-events:auto}
+.totop:hover{border-color:var(--orange);color:var(--orange)}
+.totop svg{width:18px;height:18px}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(22px);transition:.75s cubic-bezier(.2,.65,.2,1);transition-delay:var(--d,0s)}
+.rv.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- blueprint grid overlay -->
+<div class="gl" aria-hidden="true"><i></i><i></i><i></i><b></b><b></b><b></b></div>
+
+<!-- ============ NAV ============ -->
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#top" class="logo" aria-label="Akkap-Stemmann">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="2" y="4" width="20" height="2.6" rx="1"/><rect x="2" y="10.7" width="20" height="2.6" rx="1" opacity=".55"/><rect x="2" y="17.4" width="20" height="2.6" rx="1" opacity=".3"/><rect x="12.5" y="9.3" width="5.4" height="5.4" fill="#ff5f00"/></svg>
+      Akkap-Stemmann
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="#products">Products</a>
+      <a href="#proof">Proof</a>
+      <a href="#why">Company</a>
+      <a href="#faq">FAQ</a>
+      <a href="#connect">Portal <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M9 7h8v8"/></svg></a>
+    </nav>
+    <div class="tele mono" aria-hidden="true">
+      <span class="dot"></span>
+      <span>BUS <b id="tV" class="num" style="color:#c9ced6">690.0 V</b></span>
+      <span><b id="tF" class="num" style="color:#c9ced6">50.00 Hz</b></span>
+      <span><b id="tA" class="num" style="color:#ff5f00">812 A</b></span>
+    </div>
+    <a href="#contact" class="btn btn-p btn-sm nav-cta">Contact</a>
+    <button class="burger" id="burger" aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+  </div>
+</header>
+
+<!-- mobile nav -->
+<div class="mnav" id="mnav">
+  <div class="mnav-top">
+    <span class="logo"><svg viewBox="0 0 24 24" fill="currentColor" style="width:24px;height:24px"><rect x="2" y="4" width="20" height="2.6" rx="1"/><rect x="2" y="10.7" width="20" height="2.6" rx="1" opacity=".55"/><rect x="12.5" y="9.3" width="5.4" height="5.4" fill="#ff5f00"/></svg>Akkap-Stemmann</span>
+    <button class="burger" id="mclose" style="display:flex" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </div>
+  <nav style="margin-top:44px;display:flex;flex-direction:column">
+    <a class="big" href="#products" style="transition-delay:.05s">Products <span>01</span></a>
+    <a class="big" href="#proof" style="transition-delay:.1s">Proof <span>02</span></a>
+    <a class="big" href="#why" style="transition-delay:.15s">Company <span>03</span></a>
+    <a class="big" href="#faq" style="transition-delay:.2s">FAQ <span>04</span></a>
+    <a class="big" href="#contact" style="transition-delay:.25s;color:#ff5f00">Send request <span>05</span></a>
+  </nav>
+  <div class="mnav-bot">
+    <span>HOTLINE — <b>+49 203 88 42 0</b></span>
+    <span>SALES — <b>sales@akkap-stemmann.com</b></span>
+    <span>Duisburg · Gdańsk · Shanghai · Houston · Dubai</span>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- ============ HERO ============ -->
+<section class="hero grain" id="hero">
+  <img class="hero-bg" id="heroBg" src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?q=80&w=2000&auto=format&fit=crop" alt="Operator at an industrial control panel" onerror="this.onerror=null;this.src='https://picsum.photos/seed/akkap-hero/1920/1080?grayscale'">
+  <div class="shade"></div>
+  <div class="spot" id="heroSpot"></div>
+  <span class="side-tag">AKKAP–STEMMANN · ENERGY TRANSFER · EST. 1998 · 54.68°N 6.62°E</span>
+
+  <div class="wrap hero-in">
+    <span class="chip rv in"><span class="dot"></span> Bus status — <b id="chipV" style="color:#ff5f00">690.0 V</b> · NOMINAL</span>
+    <h1>
+      <span class="ln"><span style="--d:.1s">Power in</span></span>
+      <span class="ln"><span style="--d:.22s"><span class="acc">Motion.</span></span></span>
+    </h1>
+    <p class="hero-sub rv in" style="transition-delay:.35s">Premium <b>busbar systems, current collectors and cable reels</b> for cranes, ports and heavy industry. Engineered and built in-house — from raw copper to 24/7 field service. <b>One partner. Full power path.</b></p>
+    <div class="hero-cta rv in" style="transition-delay:.48s">
+      <a href="#contact" class="btn btn-p">Send request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      <a href="#products" class="btn btn-g">Product lines</a>
+    </div>
+  </div>
+
+  <div class="hero-strip">
+    <div class="wrap">
+      <span class="tb-label">Trusted by</span>
+      <div class="tb-logos">
+        <span class="wm thin"><i></i>NORDHAFEN</span>
+        <span class="wm"><i style="transform:rotate(45deg)"></i>VORTEX LOGISTICS</span>
+        <span class="wm mono2"><i></i>STAHLWERK_9</span>
+      </div>
+      <span class="tb-note">14,200+ systems in service<br>ISO 9001 · GOST-R · CE</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STATS ============ -->
+<div class="conductor" aria-hidden="true"><b></b></div>
+<section class="stats" data-spy>
+  <div class="wrap">
+    <div class="stat rv"><div class="v num"><span data-count="14200">0</span><em>+</em></div><div class="l">systems delivered since 1998</div></div>
+    <div class="stat rv" style="--d:.08s"><div class="v num"><span data-count="40">0</span></div><div class="l">countries with active service</div></div>
+    <div class="stat rv" style="--d:.16s"><div class="v num"><span data-count="99.98" data-dec="2">0</span><em>%</em></div><div class="l">fleet uptime, 2024 report</div></div>
+    <div class="stat rv" style="--d:.24s"><div class="v num"><span data-count="48">0</span><em>h</em></div><div class="l">spare-part dispatch, worldwide</div></div>
+  </div>
+</section>
+
+<!-- ============ PRODUCTS ============ -->
+<section class="sec th-light grain" id="products" data-spy>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv">
+        <div class="eyebrow"><b>01</b> Product lines</div>
+        <h2 class="h2">Conductors for<br>every duty.</h2>
+      </div>
+      <p class="rv" style="--d:.12s">Four product families cover the full power path — from substation to current collector. Every series is modular, shrouded and field-proven. All values measured per IEC 60947 / DIN 15070.</p>
+    </div>
+
+    <div class="cat-wrap rv">
+      <div class="cat-list">
+        <div class="cat-stick">
+          <div class="cat-head"><span class="mono">Catalog 2025 / Rev. 11</span></div>
+          <div id="catBtns"></div>
+          <div class="cat-count" id="catCount">SELECTED — 01 / 04</div>
+        </div>
+      </div>
+      <div class="cat-panel" id="catPanel" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRUST ============ -->
+<section class="sec trust grain" id="proof" data-spy>
+  <div class="spot" id="proofSpot"></div>
+  <div class="wrap" style="position:relative;z-index:2">
+    <div class="sec-head">
+      <div class="rv">
+        <div class="eyebrow"><b>02</b> Proof, not promises</div>
+        <h2 class="h2">Trusted where downtime is<br>measured in <span class="metal">thousands per hour.</span></h2>
+      </div>
+      <p class="rv" style="--d:.12s">Ports, steel mills and automated logistics run on Akkap-Stemmann. References, certificates and audit reports are available for every installation we ship.</p>
+    </div>
+  </div>
+
+  <div class="marq rv" aria-label="Selected customers">
+    <div class="marq-track">
+      <span class="wm thin"><i></i>NORDHAFEN</span><span class="wm mono2"><i></i>STAHLWERK_9</span><span class="wm"><i style="transform:rotate(45deg)"></i>VORTEX LOGISTICS</span><span class="wm"><i></i>KRAMER + SOHN</span><span class="wm thin"><i style="transform:rotate(45deg)"></i>BALTIC PORT LINE</span><span class="wm mono2"><i></i>TECHNOKRAN</span>
+      <span class="wm thin"><i></i>NORDHAFEN</span><span class="wm mono2"><i></i>STAHLWERK_9</span><span class="wm"><i style="transform:rotate(45deg)"></i>VORTEX LOGISTICS</span><span class="wm"><i></i>KRAMER + SOHN</span><span class="wm thin"><i style="transform:rotate(45deg)"></i>BALTIC PORT LINE</span><span class="wm mono2"><i></i>TECHNOKRAN</span>
+    </div>
+  </div>
+
+  <div class="wrap" style="position:relative;z-index:2">
+    <div class="cert-row rv">
+      <span class="cert"><i data-lucide="badge-check"></i>ISO 9001:2015</span>
+      <span class="cert"><i data-lucide="badge-check"></i>ISO 14001</span>
+      <span class="cert"><i data-lucide="shield-check"></i>ISO 45001</span>
+      <span class="cert"><i data-lucide="file-check"></i>GOST-R / EAC</span>
+      <span class="cert"><i data-lucide="file-check"></i>CE / TÜV NORD</span>
+      <span class="cert"><i data-lucide="file-check"></i>EN 10204 3.1</span>
+    </div>
+    <p class="cert-note rv" style="--d:.1s">Copies on request · factory audits welcome · docs in customer portal within 24 h of order</p>
+
+    <div class="cases">
+      <article class="case rv">
+        <span class="ctag">PORTS</span>
+        <div><h4>RTG electrification — Nordhafen Container Terminal</h4><p class="cd">14 diesel RTG cranes converted to KB-860 rail + CH-150 contact charging lanes.</p></div>
+        <div class="cfig">
+          <div class="cf"><div class="v num"><em>−</em><span data-count="68">0</span><em>%</em></div><div class="l">fuel &amp; CO₂</div></div>
+          <div class="cf"><div class="v num"><span data-count="2400">0</span><em>t</em></div><div class="l">CO₂ saved / yr</div></div>
+          <div class="cf"><div class="v num"><span data-count="22">0</span><em>mo</em></div><div class="l">payback</div></div>
+        </div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </article>
+      <article class="case rv" style="--d:.08s">
+        <span class="ctag">STEEL</span>
+        <div><h4>Melt-shop power — Stahlwerk 9</h4><p class="cd">KB-1400 HD busbar on ladle cranes under extreme heat and dust, 5 years in service.</p></div>
+        <div class="cfig">
+          <div class="cf"><div class="v num"><span data-count="99.98" data-dec="2">0</span><em>%</em></div><div class="l">uptime / 5 yrs</div></div>
+          <div class="cf"><div class="v num"><span data-count="1400">0</span><em>A</em></div><div class="l">continuous</div></div>
+          <div class="cf"><div class="v num"><em>−</em><span data-count="41">0</span><em>%</em></div><div class="l">maintenance cost</div></div>
+        </div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </article>
+      <article class="case rv" style="--d:.16s">
+        <span class="ctag">AUTOMOTIVE</span>
+        <div><h4>AS/RS energy grid — Vortex Logistics</h4><p class="cd">HY-2 hybrid power + 1 Gbit/s data rail across a fully automated high-bay warehouse.</p></div>
+        <div class="cfig">
+          <div class="cf"><div class="v num"><span data-count="12.4" data-dec="1">0</span><em>km</em></div><div class="l">hybrid rail</div></div>
+          <div class="cf"><div class="v num"><span data-count="6000">0</span><em>/d</em></div><div class="l">shuttle cycles</div></div>
+          <div class="cf"><div class="v num"><span data-count="0">0</span></div><div class="l">downtime, year one</div></div>
+        </div>
+        <span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section class="sec th-light grain why" id="why" data-spy>
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="rv">
+        <div class="eyebrow"><b>03</b> Why Akkap-Stemmann</div>
+        <h2 class="h2">Four reasons engineers<br>spec us first.</h2>
+      </div>
+      <p class="rv" style="--d:.12s">Competitors sell components. We deliver the power path — and stay accountable for it for decades.</p>
+    </div>
+
+    <div class="adv rv">
+      <div class="adv-row">
+        <span class="rail"></span>
+        <span class="n">A—01</span>
+        <span class="ic"><i data-lucide="factory"></i></span>
+        <div><h3>Full vertical integration</h3><p>Copper rolling, carbon brush production and final assembly under one roof in Duisburg. Quality never leaves our line.</p></div>
+        <div class="fact"><b>0 subcontractors</b>in the critical path</div>
+      </div>
+      <div class="adv-row">
+        <span class="rail"></span>
+        <span class="n">A—02</span>
+        <span class="ic"><i data-lucide="pen-tool"></i></span>
+        <div><h3>Engineering in 72 hours</h3><p>Custom voltages, brackets and curved tracks — from your CAD to a prototype approval in three working days.</p></div>
+        <div class="fact"><b>1,900+ projects</b>custom-built &amp; shipped</div>
+      </div>
+      <div class="adv-row">
+        <span class="rail"></span>
+        <span class="n">A—03</span>
+        <span class="ic"><i data-lucide="truck"></i></span>
+        <div><h3>48 h global spares</h3><p>Six regional hubs, 12,000 SKUs on stock. Wear parts ship within 48 hours — anywhere your fleet operates.</p></div>
+        <div class="fact"><b>98.6% first-time-fix</b>on service tickets</div>
+      </div>
+      <div class="adv-row">
+        <span class="rail"></span>
+        <span class="n">A—04</span>
+        <span class="ic"><i data-lucide="wrench"></i></span>
+        <div><h3>Service for 25 years</h3><p>Commissioning, thermographic inspections and collector exchange programs — for the whole life of your crane.</p></div>
+        <div class="fact"><b>24/7 hotline</b>4 h remote response</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FAQ ============ -->
+<section class="sec th-light grain faq-sec" id="faq" data-spy>
+  <div class="wrap faq-grid">
+    <div class="faq-left rv">
+      <div class="eyebrow"><b>04</b> FAQ</div>
+      <h2 class="h2">Asked before<br>every order.</h2>
+      <p>Six answers that cover 90% of technical discussions. The rest — with an engineer, not a salesperson.</p>
+      <a href="#contact" class="btn btn-g btn-sm">Ask an engineer <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+    <div class="faq-list rv" style="--d:.1s" id="faqList">
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q01</span><h4>Which is right for my crane — busbar or festoon?</h4><span class="chev"><i data-lucide="chevron-down"></i></span></button>
+        <div class="faq-a"><p>Rule of thumb: travel beyond 200 m or speeds above 120 m/min favor conductor rail; festoon wins on short runs and tight budgets. Our engineers evaluate duty cycle, environment and fleet standardization before quoting — a sizing answer within 4 working hours.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q02</span><h4>How often do current collectors need service?</h4><span class="chev"><i data-lucide="chevron-down"></i></span></button>
+        <div class="faq-a"><p>Inspect brush wear every 500 operating hours; typical carbon life is 8,000–25,000 h depending on dust load and alignment. Akkap Connect customers receive predictive wear alerts from collector telemetry — replacements ship before failure, not after.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q03</span><h4>Do you retrofit third-party cranes?</h4><span class="chev"><i data-lucide="chevron-down"></i></span></button>
+        <div class="faq-a"><p>Yes — roughly a third of our projects are retrofits. We survey on site, design adapter brackets for existing girder drilling and phase changeovers so production never stops. Adapter kits cover the most common OEM rail geometries.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q04</span><h4>Are your systems certified for GOST / CIS projects?</h4><span class="chev"><i data-lucide="chevron-down"></i></span></button>
+        <div class="faq-a"><p>Every export batch ships with GOST-R / EAC conformity, calibration sheets and material certificates to EN 10204 3.1. TÜV type tests and customer factory audits are welcome at any time.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q05</span><h4>What are typical lead times?</h4><span class="chev"><i data-lucide="chevron-down"></i></span></button>
+        <div class="faq-a"><p>Standard rail and collectors: 2–3 weeks ex works. Custom voltages, brackets or curved tracks: 6–8 weeks including prototype approval. A-stock spare parts dispatch within 48 h from six regional hubs.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q"><span class="qn">Q06</span><h4>What warranty and service contracts do you offer?</h4><span class="chev"><i data-lucide="chevron-down"></i></span></button>
+        <div class="faq-a"><p>24 months or 10,000 operating hours, whichever comes first. Extendable with Uptime+ contracts: thermographic inspection, brush exchange program, 4 h remote response and guaranteed 48 h parts logistics across 40 countries.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="sec cta grain" id="contact" data-spy>
+  <div class="cta-bg" aria-hidden="true"><img src="https://images.unsplash.com/photo-1541888946425-d81bb19240f5?q=80&w=1800&auto=format&fit=crop" alt="" onerror="this.style.display='none'"></div>
+  <div class="spot" id="ctaSpot"></div>
+  <div class="wrap" style="position:relative;z-index:2">
+    <div class="cta-grid">
+      <div class="rv">
+        <div class="eyebrow"><b>05</b> Send request</div>
+        <h2 class="h2">Tell us your duty cycle.<br><span class="metal">We’ll run the numbers.</span></h2>
+        <div style="margin-top:34px">
+          <div class="c-item"><i data-lucide="phone"></i><div><div class="k">Hotline — 24/7</div><div class="v">+49 203 88 42 0</div></div></div>
+          <div class="c-item"><i data-lucide="mail"></i><div><div class="k">Sales &amp; quotes</div><div class="v">sales@akkap-stemmann.com</div></div></div>
+          <div class="c-item"><i data-lucide="map-pin"></i><div><div class="k">Headquarters &amp; plant</div><div class="v">Werkstraße 9, 47059 Duisburg, DE</div></div></div>
+          <div class="c-item"><i data-lucide="clock"></i><div><div class="k">Response time</div><div class="v">Engineer replies within 4 working hours</div></div></div>
+        </div>
+        <div class="connect" id="connect">
+          <span class="k">AKKAP CONNECT</span>
+          <h5>The owners’ engineering community.</h5>
+          <p>Service bulletins, sizing tools, spare-part pricing. 4,800+ plant &amp; port engineers inside.</p>
+          <form class="conn-form" id="connForm">
+            <input type="email" id="connMail" placeholder="work@email.com" required aria-label="Email for Akkap Connect">
+            <button type="submit" aria-label="Join"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          </form>
+        </div>
+      </div>
+
+      <div class="form-card rv" style="--d:.12s">
+        <form id="rfqForm" novalidate>
+          <div class="f-row">
+            <div class="f-field"><label for="f-name">Full name <b>*</b></label><input id="f-name" type="text" placeholder="J. Kowalski"><span class="emsg">Required</span></div>
+            <div class="f-field"><label for="f-co">Company <b>*</b></label><input id="f-co" type="text" placeholder="Nordhafen Terminal GmbH"><span class="emsg">Required</span></div>
+          </div>
+          <div class="f-row">
+            <div class="f-field"><label for="f-mail">Work email <b>*</b></label><input id="f-mail" type="email" placeholder="you@company.com"><span class="emsg">Valid email required</span></div>
+            <div class="f-field"><label for="f-ph">Phone</label><input id="f-ph" type="tel" placeholder="+49 …"></div>
+          </div>
+          <div class="f-field sel"><label for="f-app">Application <b>*</b></label>
+            <select id="f-app">
+              <option value="">Select application…</option>
+              <option value="bsb">Crane busbar systems</option>
+              <option value="col">Current collectors</option>
+              <option value="fes">Festoon &amp; cable reels</option>
+              <option value="chg">Charging &amp; data rails</option>
+              <option value="sp">Spare parts</option>
+              <option value="sv">Service / Uptime+</option>
+              <option value="ot">Other</option>
+            </select><span class="emsg">Pick an application</span>
+          </div>
+          <div class="f-field"><label for="f-msg">Project brief <b>*</b></label><textarea id="f-msg" placeholder="Travel length, speeds, duty cycle, environment…"></textarea><span class="emsg">Tell us a little about the project</span></div>
+          <div class="f-foot">
+            <button type="submit" class="btn btn-p" id="rfqBtn">Send request <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg><span class="spinner"></span></button>
+            <span class="hint">NDA on request · no obligation · EN / RU / DE</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="wrap">
+    <div class="foot-brand">
+      <div>
+        <div class="fwm">Akkap-<span>Stemmann</span></div>
+        <p class="fp">Premium energy transfer systems for cranes, ports and heavy industry. Duisburg — since 1998.</p>
+      </div>
+      <div class="fcol"><h6>Product lines</h6><a href="#products">Crane busbars</a><a href="#products">Current collectors</a><a href="#products">Festoon &amp; reels</a><a href="#products">Charging &amp; data</a></div>
+      <div class="fcol"><h6>Company</h6><a href="#why">About</a><a href="#proof">References</a><a href="#connect">Akkap Connect</a><a href="#contact">Careers ↗</a></div>
+      <div class="fcol"><h6>Service</h6><a href="#contact">Uptime+ contracts</a><a href="#contact">Spare parts 48 h</a><a href="#contact">Hotline 24/7</a><a href="#faq">FAQ</a></div>
+    </div>
+    <div class="foot-bot">
+      <span>© <span id="yy">2025</span> Akkap-Stemmann GmbH · Energy transfer systems</span>
+      <span style="opacity:.5">Duisburg · Gdańsk · Shanghai · Houston · Dubai</span>
+      <span class="right"><a href="#top">Imprint</a><a href="#top">Privacy</a><a href="#top">Terms</a></span>
+    </div>
+  </div>
+</footer>
+
+<div id="toasts"></div>
+<button class="totop" id="totop" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+
+<script>
+/* ================= DATA ================= */
+const CATS=[
+ {id:'bsb',code:'BSB—01',name:'Crane Busbar Systems',range:'160–1400 A · up to 1000 V',
+  img:'https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?q=80&w=1400&auto=format&fit=crop',seed:'akkap-bsb',
+  cap:'FIG.01 — KB-860 RAIL ON RTG GIRDER, NORDHAFEN',
+  desc:'Shrouded multi-pole conductor rails for overhead cranes, monorails, RTG/RMG and storage & retrieval units. Modular track, rolled copper profile, IP23 shrouding as standard.',
+  tags:['IP23 shrouded','Copper + stainless','Curves R ≥ 1.2 m','Hot-dip option'],
+  cols:['Series','Current','Voltage','Speed','Typical duty'],
+  rows:[['KB-160','160 A','690 V','120 m/min','Light cranes, monorails'],['KB-400','400 A','690 V','200 m/min','Process cranes, workshops'],['KB-860','860 A','1000 V','240 m/min','RTG / RMG, STS booms'],['KB-1400 HD','1400 A','1000 V','240 m/min','Steel mills, melt shop']],
+  note:'Joint resistance < 25 µΩ · collector life 25,000 h · operating range −30…+80 °C.'},
+ {id:'col',code:'COL—02',name:'Current Collectors',range:'40–250 A · carbon & metal-graphite',
+  img:'https://images.unsplash.com/photo-1517420704952-d9f39e95b43e?q=80&w=1400&auto=format&fit=crop',seed:'akkap-col',
+  cap:'FIG.02 — CC-SERIES BRUSH ASSEMBLY, FINAL CHECK',
+  desc:'Self-aligning collectors with constant-contact-force arms and quick-exchange brush holders. Field-replaceable in under 4 minutes — no crane stopover required.',
+  tags:['Constant-force arm','Tool-free brush swap','Sealed bearings','Spark-free grades'],
+  cols:['Series','Rating','Contact','Brush grade','Typical duty'],
+  rows:[['CC-40','40 A','Side entry','K4 carbon','Monorails, hoists'],['CC-80','80 A','Top entry','K4 carbon','Standard EOT cranes'],['CC-125 HD','125 A','Top entry','MG-9 graphite','High-duty process cranes'],['CC-250 TWIN','250 A','Twin arm','MG-9 graphite','Melt shop, potlines']],
+  note:'Insertion force 22 N ± 2 · IP54 option · ATEX-compatible grades available.'},
+ {id:'fes',code:'FES—03',name:'Festoon & Cable Reels',range:'up to 480 m travel · 8–120 m/min',
+  img:'https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=1400&auto=format&fit=crop',seed:'akkap-fes',
+  cap:'FIG.03 — FR-M REEL, AUTOMATED STORAGE AISLE',
+  desc:'Motorized and spring-loaded cable reels plus flat-cable festoon lines for long travel, hoists and mobile equipment. Engineered cable curvature for maximum flex life.',
+  tags:['Motorized & spring drive','Flat & round cable','Guide trough systems','Sync trolleys'],
+  cols:['Model','Drive','Cable length','Line speed','Load class'],
+  rows:[['FR-0','Spring','20 m','60 m/min','0.8 t'],['FR-M','Motor 1.1 kW','120 m','120 m/min','2.5 t'],['FE-2','Trolley line','300 m','8–120 m/min','60 kg / trolley'],['FR-HD','Motor 3.0 kW','480 m','90 m/min','8 t']],
+  note:'Torque control ± 5% · slip-ring IP54 · cable life ≥ 500,000 flex cycles.'},
+ {id:'chg',code:'CHG—04',name:'Charging & Data Rails',range:'up to 150 kW · 1 Gbit/s',
+  img:'https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?q=80&w=1400&auto=format&fit=crop',seed:'akkap-chg',
+  cap:'FIG.04 — HY-2 HYBRID RAIL, ROBOTIC CELL',
+  desc:'Contact charging rails and hybrid power-plus-data conductors for E-RTG, AGV and automated storage. One rail carries energy, Profinet and positioning in a single track.',
+  tags:['E-RTG charging','Profinet / EtherCAT','Absolute positioning','Pantograph style'],
+  cols:['System','Power','Data','Standard','Typical duty'],
+  rows:[['CH-150','150 kW','—','Pantograph','E-RTG charging lanes'],['CH-60','60 kW','—','Pole contact','AGV opportunity charge'],['HY-2','2 × 125 A','1 Gbit/s','Hybrid rail','AS/RS shuttles'],['PQ-i','—','SSI / CAN','Encoder rail','Position feedback']],
+  note:'Charge efficiency 97.4% · data BitErr < 10⁻⁹ · indoor & outdoor IP ratings.'}
+];
+
+/* ================= ICONS / YEAR ================= */
+lucide.createIcons();
+document.getElementById('yy').textContent=new Date().getFullYear();
+
+/* ================= TOAST ================= */
+function toast(msg,icon='info'){
+  const c=document.getElementById('toasts');
+  const t=document.createElement('div');t.className='toast';
+  t.innerHTML=`<i data-lucide="${icon}"></i><span>${msg}</span>`;
+  c.appendChild(t);lucide.createIcons();
+  requestAnimationFrame(()=>t.classList.add('on'));
+  setTimeout(()=>{t.classList.remove('on');setTimeout(()=>t.remove(),350)},3600);
+}
+
+/* ================= NAV ================= */
+const nav=document.getElementById('nav');
+const onScroll=()=>{nav.classList.toggle('sc',scrollY>10);document.getElementById('totop').classList.toggle('show',scrollY>700);heroParallax();};
+addEventListener('scroll',onScroll,{passive:true});onScroll();
+document.getElementById('totop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
+const mnav=document.getElementById('mnav');
+document.getElementById('burger').onclick=()=>{mnav.classList.add('open');document.body.classList.add('lock');};
+document.getElementById('mclose').onclick=closeM;
+mnav.querySelectorAll('a').forEach(a=>a.onclick=closeM);
+function closeM(){mnav.classList.remove('open');document.body.classList.remove('lock');}
+
+/* scrollspy */
+const spyMap={};document.querySelectorAll('.nav-links a').forEach(a=>spyMap[a.getAttribute('href').slice(1)]=a);
+new IntersectionObserver(es=>es.forEach(e=>{const l=spyMap[e.target.id];if(l&&e.isIntersecting){document.querySelectorAll('.nav-links a').forEach(x=>x.classList.remove('on'));l.classList.add('on');}}),{rootMargin:'-40% 0px -55% 0px'}).observe;
+(function(){const ob=new IntersectionObserver(es=>es.forEach(e=>{const l=spyMap[e.target.id];if(l&&e.isIntersecting){document.querySelectorAll('.nav-links a').forEach(x=>x.classList.remove('on'));l.classList.add('on');}}),{rootMargin:'-40% 0px -55% 0px'});document.querySelectorAll('[data-spy]').forEach(s=>ob.observe(s));})();
+
+/* ================= TELEMETRY ================= */
+let tV=690.0,tF=50.00,tA=812;
+setInterval(()=>{
+  tV=Math.min(691.4,Math.max(688.6,tV+(Math.random()-.5)*.5));
+  tF=Math.min(50.03,Math.max(49.97,tF+(Math.random()-.5)*.02));
+  tA=Math.min(880,Math.max(740,tA+(Math.random()-.5)*26));
+  const v=tV.toFixed(1)+' V';
+  document.getElementById('tV').textContent=v;
+  document.getElementById('chipV').textContent=v;
+  document.getElementById('tF').textContent=tF.toFixed(2)+' Hz';
+  document.getElementById('tA').textContent=Math.round(tA)+' A';
+},1600);
+
+/* ================= REVEAL & COUNTERS ================= */
+const rvOb=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rvOb.unobserve(e.target);}}),{threshold:.12});
+document.querySelectorAll('.rv').forEach(el=>rvOb.observe(el));
+function animCount(el){
+  const t=parseFloat(el.dataset.count),d=+(el.dataset.dec||0),t0=performance.now();
+  (function step(now){const p=Math.min(1,(now-t0)/1500),e=1-Math.pow(1-p,3);
+    el.textContent=(t*e).toFixed(d).replace(/\B(?=(\d{3})+(?!\d))/g,',');
+    if(p<1)requestAnimationFrame(step);})(t0);
+}
+const cOb=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){animCount(e.target);cOb.unobserve(e.target);}}),{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cOb.observe(el));
+
+/* ================= PRODUCT TABS ================= */
+const btnsBox=document.getElementById('catBtns'),panel=document.getElementById('catPanel');
+let curCat=0;
+btnsBox.innerHTML=CATS.map((c,i)=>`
+ <button class="cat-btn${i===0?' act':''}" data-i="${i}" aria-pressed="${i===0}">
+   <span class="idx">0${i+1}</span><span class="t">${c.name}</span><span class="s">${c.range}</span>
+   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+ </button>`).join('');
+function renderCat(i){
+  const c=CATS[i];
+  panel.innerHTML=`
+   <div class="cp-img">
+     <img src="${c.img}" alt="${c.name}" onerror="this.onerror=null;this.src='https://picsum.photos/seed/${c.seed}/1200/900?grayscale'">
+     <span class="cp-code">${c.code}</span><span class="cap">${c.cap}</span>
+   </div>
+   <div class="cp-body">
+     <h3>${c.name}</h3><div class="range mono">${c.range}</div>
+     <p class="desc">${c.desc}</p>
+     <div class="tags">${c.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+     <div class="tbl-wrap"><table><thead><tr>${c.cols.map(h=>`<th>${h}</th>`).join('')}</tr></thead>
+       <tbody>${c.rows.map(r=>`<tr><td class="m">${r[0]}</td><td class="m"><b>${r[1]}</b></td>${r.slice(2).map(v=>`<td>${v}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+     <p class="cp-note">${c.note}</p>
+     <div class="cp-actions">
+       <button class="btn btn-p btn-sm" data-ds="${i}"><i data-lucide="file-text"></i>Request datasheet</button>
+       <button class="btn btn-g btn-sm" data-sz="${i}"><i data-lucide="phone"></i>Get sizing help</button>
+     </div>
+   </div>`;
+  lucide.createIcons();
+}
+renderCat(0);
+btnsBox.addEventListener('click',e=>{
+  const b=e.target.closest('.cat-btn');if(!b)return;
+  const i=+b.dataset.i;if(i===curCat)return;curCat=i;
+  document.querySelectorAll('.cat-btn').forEach((x,j)=>{x.classList.toggle('act',j===i);x.setAttribute('aria-pressed',j===i);});
+  document.getElementById('catCount').textContent=`SELECTED — 0${i+1} / 04`;
+  panel.classList.add('swap');
+  setTimeout(()=>{renderCat(i);panel.classList.remove('swap');},230);
+});
+panel.addEventListener('click',e=>{
+  const ds=e.target.closest('[data-ds]'),sz=e.target.closest('[data-sz]');
+  if(ds){const c=CATS[+ds.dataset.ds];prefill(c.id,`Please send the datasheet for the ${c.name} (${c.range}). Application: `);}
+  if(sz){const c=CATS[+sz.dataset.sz];prefill(c.id,`Requesting sizing help for ${c.name}. Duty cycle / travel / speeds: `);}
+});
+function prefill(app,msg){
+  document.getElementById('f-app').value=app;
+  document.getElementById('f-msg').value=msg;
+  document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+  setTimeout(()=>document.getElementById('f-name').focus({preventScroll:true}),700);
+  toast('Product pre-selected in the request form','zap');
+}
+
+/* ================= FAQ ================= */
+const items=[...document.querySelectorAll('.faq-item')];
+items.forEach(it=>{
+  it.querySelector('.faq-q').addEventListener('click',()=>{
+    const open=it.classList.contains('open');
+    items.forEach(x=>{x.classList.remove('open');x.querySelector('.faq-a').style.maxHeight=null;});
+    if(!open){it.classList.add('open');const a=it.querySelector('.faq-a');a.style.maxHeight=a.scrollHeight+'px';}
+  });
+});
+
+/* ================= FORMS ================= */
+const rfq=document.getElementById('rfqForm');
+function setErr(id,on){document.getElementById(id).closest('.f-field').classList.toggle('err',on);}
+['f-name','f-co','f-mail','f-app','f-msg'].forEach(id=>document.getElementById(id).addEventListener('input',()=>setErr(id,false)));
+rfq.addEventListener('submit',e=>{
+  e.preventDefault();
+  const name=document.getElementById('f-name').value.trim(),
+        co=document.getElementById('f-co').value.trim(),
+        mail=document.getElementById('f-mail').value.trim(),
+        app=document.getElementById('f-app').value,
+        msg=document.getElementById('f-msg').value.trim();
+  let ok=true;
+  setErr('f-name',!name);setErr('f-co',!co);
+  setErr('f-mail',!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(mail));
+  setErr('f-app',!app);setErr('f-msg',!msg);
+  ok=[...rfq.querySelectorAll('.f-field')].every(f=>!f.classList.contains('err'));
+  if(!ok){toast('Please complete the highlighted fields','alert-circle');return;}
+  const btn=document.getElementById('rfqBtn');btn.classList.add('loading');btn.disabled=true;
+  setTimeout(()=>{
+    const rid='REQ-'+new Date().getFullYear()+'-'+Math.floor(1000+Math.random()*9000);
+    document.getElementById('rfqForm').innerHTML=`
+      <div class="f-success">
+        <div class="ok"><i data-lucide="check"></i></div>
+        <h4>Request received</h4>
+        <div class="rid mono">${rid}</div>
+        <p>An application engineer will contact you within <b style="color:#fff">4 working hours</b>. Certificate pack attached to your reply.</p>
+        <button id="rfqAgain">Send another request</button>
+      </div>`;
+    lucide.createIcons();
+    toast('Request '+rid+' submitted','check');
+    document.getElementById('rfqAgain').onclick=()=>location.reload();
+  },1000);
+});
+document.getElementById('connForm').addEventListener('submit',e=>{
+  e.preventDefault();
+  const m=document.getElementById('connMail');
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(m.value.trim())){toast('Enter a valid work email','alert-circle');m.focus();return;}
+  toast('Welcome to Akkap Connect — check your inbox','check');m.value='';
+});
+
+/* ================= SPOTLIGHT & PARALLAX ================= */
+[['heroSpot','hero'],['proofSpot','proof'],['ctaSpot','contact']].forEach(([sid,secid])=>{
+  const s=document.getElementById(sid),sec=document.getElementById(secid);
+  sec.addEventListener('mousemove',e=>{
+    const r=sec.getBoundingClientRect();
+    s.style.setProperty('--sx',(e.clientX-r.left)+'px');
+    s.style.setProperty('--sy',(e.clientY-r.top)+'px');
+  });
+});
+function heroParallax(){
+  const bg=document.getElementById('heroBg');if(!bg)return;
+  const y=Math.min(scrollY,innerHeight);
+  bg.style.transform=`translateY(${y*0.18}px)`;
+}
+</script>
+</body>
+</html>
