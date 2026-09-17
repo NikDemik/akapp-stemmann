@@ -15,7 +15,7 @@ declare global {
 
 const captchaSiteKey = process.env.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY;
 
-export function RequestForm({ defaultType = "request" }: { defaultType?: string }) {
+export function RequestForm({ defaultType = "request", region }: { defaultType?: string; region?: string }) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [captchaToken, setCaptchaToken] = useState("");
@@ -63,6 +63,7 @@ export function RequestForm({ defaultType = "request" }: { defaultType?: string 
     <>
       {captchaSiteKey ? <Script src="https://smartcaptcha.yandexcloud.net/captcha.js" strategy="afterInteractive" /> : null}
       <form className="request-form" onSubmit={handleSubmit} noValidate>
+        {region ? <input type="hidden" name="region" value={region} /> : null}
         <div className="form-row">
           <label>
             <span>Имя *</span>

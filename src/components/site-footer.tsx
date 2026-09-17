@@ -20,6 +20,7 @@ export function SiteFooter() {
           <h2>Компания</h2>
           <Link href="/about/">О компании</Link>
           <Link href="/delivery/">Доставка</Link>
+          <Link href="/regions/">Регионы поставки</Link>
           <Link href="/contacts/">Контакты</Link>
         </div>
         <div className="footer-column footer-contacts">

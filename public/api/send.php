@@ -37,6 +37,7 @@ $phone = clean((string)($data['phone'] ?? ''), 60);
 $email = filter_var(trim((string)($data['email'] ?? '')), FILTER_VALIDATE_EMAIL);
 $message = clean((string)($data['message'] ?? ''), 4000);
 $type = clean((string)($data['type'] ?? 'request'), 30);
+$region = clean((string)($data['region'] ?? ''), 100);
 $consent = (string)($data['consent'] ?? '');
 
 if (mb_strlen($name) < 2 || mb_strlen($phone) < 6 || !$email || mb_strlen($message) < 10 || $consent === '') {
@@ -72,7 +73,8 @@ $typeNames = [
 $typeLabel = $typeNames[$type] ?? 'Заявка с сайта';
 $recipient = 'zapros@trolleynyi-shinoprovod.ru';
 $subject = '=?UTF-8?B?' . base64_encode($typeLabel . ' — akapp-stemmann.su') . '?=';
-$body = "Тип: {$typeLabel}\nИмя: {$name}\nКомпания: {$company}\nТелефон: {$phone}\nEmail: {$email}\n\nСообщение:\n{$message}\n\nИсточник: akapp-stemmann.su";
+$regionLine = $region !== '' ? "Регион: {$region}\n" : '';
+$body = "Тип: {$typeLabel}\n{$regionLine}Имя: {$name}\nКомпания: {$company}\nТелефон: {$phone}\nEmail: {$email}\n\nСообщение:\n{$message}\n\nИсточник: akapp-stemmann.su";
 $headers = [
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',

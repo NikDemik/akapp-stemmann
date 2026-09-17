@@ -6,7 +6,7 @@
     "subtitle": "Универсальный закрытый троллейный шинопровод",
     "range": "35–320 А",
     "description": "Семиполюсная система непрерывного токоподвода для кранов, конвейеров и автоматизированных складов. Плоские проводники без промежуточных стыков обеспечивают стабильную передачу энергии на длинных трассах.",
-    "image": "/images/catalogs/multiconductor.jpg",
+    "image": "/images/products/Multiconductor/AKAPP-STEMMANN-trollejnij-tokoprovod-Multiconductor.jpg",
     "catalog": "/catalogs/Katalog-Zakrytyj-trollejnyj-tokopodvod-Multiconductor-Akapp-Stemmann.pdf",
     "specs": [
       {"label": "Номинальный ток", "value": "35, 50, 80, 125, 160, 250, 320 А"},
@@ -29,7 +29,7 @@
     "subtitle": "Универсальная система с раздельными корпусами",
     "range": "50–400 А",
     "description": "Модульный токоподвод с 4, 7 или 10 проводниками. Подходит для крановых систем и оборудования, где требуется гибкая конфигурация силовых и управляющих цепей.",
-    "image": "/images/catalogs/pro-ductor.jpg",
+    "image": "/images/products/Pro-Ductor/AKAPP-STEMMANN-yniversalnij-tokoprovod-Pro-Ductor.jpg",
     "catalog": "/catalogs/Katalog-Universalnyj-tokopodvod-ProDuctor-Akapp-Stemmann.pdf",
     "specs": [
       {"label": "Номинальный ток", "value": "50–400 А"},
@@ -50,7 +50,7 @@
     "subtitle": "Экономичная четырёхполюсная система",
     "range": "35–160 А",
     "description": "Компактный закрытый шинопровод для кранов, тележек и другого грузоподъёмного оборудования. Непрерывные плоские проводники устанавливаются без промежуточных соединений.",
-    "image": "/images/catalogs/4-ductor.jpg",
+    "image": "/images/products/4-Ductor/trollejnij-tokoprovod-AKAPP-STEMMANN-4-Ductor.jpg",
     "catalog": "/catalogs/Katalog-Zakrytyj-trollejnyj-tokopodvod-4Ductor-Akapp-Stemmann.pdf",
     "specs": [
       {"label": "Номинальный ток", "value": "35, 50, 80, 125, 160 А"},
@@ -73,7 +73,7 @@
     "subtitle": "Секционный закрытый шинопровод быстрого монтажа",
     "range": "50–400 А",
     "description": "Система токоподвода с быстрым соединением секций для прямых и криволинейных трасс. Конструкция упрощает монтаж, обслуживание и последующее расширение линии.",
-    "image": "/images/catalogs/click-ductor.jpg",
+    "image": "/images/products/Click-Ductor/AKAPP-STEMMANN-tokoprovod-Click-Ductor.jpg",
     "catalog": "/catalogs/Katalog-Tokopodvod-Click-Ductor-Akapp-Stemmann.pdf",
     "specs": [
       {"label": "Номинальный ток", "value": "50–400 А"},
@@ -94,7 +94,7 @@
     "subtitle": "Компактный секционный токоподвод",
     "range": "40–240 А",
     "description": "Компактная система для производственных линий, кранов и складского оборудования. Поставляется как часть семейства SCL / SACL / SICL / SOCL.",
-    "image": "/images/catalogs/heavy-conductor.jpg",
+    "image": "/images/products/SCL/shinoprovod-akapp-stemmann-serii-scl.jpg",
     "catalog": "/catalogs/Katalog-Sistemi-tokopodvodov-SCL-SACL-SICL-SOCL-Akapp-Stemmann.pdf",
     "specs": [
       {"label": "Номинальный ток", "value": "40–240 А"},
@@ -110,7 +110,7 @@
     "subtitle": "Алюминиевая система токоподвода",
     "range": "60–280 А",
     "description": "Секционный шинопровод в алюминиевом исполнении для надёжного электропитания подвижного промышленного оборудования.",
-    "image": "/images/catalogs/heavy-conductor.jpg",
+    "image": "/images/products/SACL/shinoprovod-akapp-stemmann-serii-sacl.jpg",
     "catalog": "/catalogs/Katalog-Sistemi-tokopodvodov-SCL-SACL-SICL-SOCL-Akapp-Stemmann.pdf",
     "specs": [
       {"label": "Номинальный ток", "value": "60–280 А"},
@@ -126,7 +126,7 @@
     "subtitle": "Изолированный шинопровод большой мощности",
     "range": "до 2200 А",
     "description": "Мощная изолированная система для тяжёлой промышленности, портовых кранов и оборудования с высоким токопотреблением.",
-    "image": "/images/catalogs/heavy-conductor.jpg",
+    "image": "/images/products/SICL/shinoprovod-akapp-stemmann-serii-sicl.jpg",
     "catalog": "/catalogs/Katalog-Sistemi-tokopodvodov-SCL-SACL-SICL-SOCL-Akapp-Stemmann.pdf",
     "specs": [
       {"label": "Максимальный ток", "value": "до 2200 А"},
@@ -142,7 +142,7 @@
     "subtitle": "Открытый токоподвод большой мощности",
     "range": "до 2160 А",
     "description": "Открытая система токоподвода для тяжёлых режимов эксплуатации, больших пролётов и высоких токовых нагрузок.",
-    "image": "/images/catalogs/heavy-conductor.jpg",
+    "image": "/images/products/SOCL/shinoprovod-akapp-stemmann-serii-socl.jpg",
     "catalog": "/catalogs/Katalog-Sistemi-tokopodvodov-SCL-SACL-SICL-SOCL-Akapp-Stemmann.pdf",
     "specs": [
       {"label": "Максимальный ток", "value": "до 2160 А"},
@@ -158,7 +158,7 @@
     "subtitle": "Фестонная система для лёгких нагрузок",
     "range": "профиль R150",
     "description": "Кабельные тележки из полиамида, алюминия или стали для плоских и круглых кабелей. Подходят для работы внутри и снаружи помещений.",
-    "image": "/images/catalogs/festoon.jpg",
+    "image": "/images/products/Festoon/r150-catalog.png",
     "catalog": "/catalogs/Brochure_Festoon.pdf",
     "specs": [
       {"label": "Направляющая", "value": "С-профиль R150"},
@@ -179,7 +179,7 @@
     "subtitle": "Фестонная система для средних нагрузок",
     "range": "до 120 м/мин",
     "description": "Алюминиевые и стальные кабельные тележки для средних нагрузок. Система рассчитана на плоские и круглые кабели и может комплектоваться мобильной подвеской.",
-    "image": "/images/catalogs/festoon.jpg",
+    "image": "/images/products/Festoon/r300-catalog.png",
     "catalog": "/catalogs/Brochure_Festoon.pdf",
     "specs": [
       {"label": "Направляющая", "value": "С-профиль R300"},
@@ -200,7 +200,7 @@
     "subtitle": "Фестонные системы для тяжёлых нагрузок",
     "range": "усиленные профили",
     "description": "Стальные тележки и усиленные направляющие для тяжёлых кабельных пакетов, наружной установки и работы при повышенных температурах.",
-    "image": "/images/catalogs/festoon.jpg",
+    "image": "/images/products/Festoon/r400-r600-catalog.png",
     "catalog": "/catalogs/Brochure_Festoon.pdf",
     "specs": [
       {"label": "Профили", "value": "R400, R500, R600"},
@@ -221,7 +221,7 @@
     "subtitle": "Подвесные посты управления для кранов",
     "range": "16 / 24 контакта",
     "description": "Мобильные подвески позволяют оператору управлять краном с безопасного расстояния. Возможна комплектация распределительным щитом или разъёмным подключением пульта.",
-    "image": "/images/catalogs/festoon.jpg",
+    "image": "/images/products/Festoon/mobile-pendant-catalog.png",
     "catalog": "/catalogs/Brochure_Festoon.pdf",
     "specs": [
       {"label": "Исполнение", "value": "с распределительным щитом или розеткой"},
@@ -240,7 +240,7 @@
     "subtitle": "Пружинные кабельные барабаны",
     "range": "4 мА – 200 А · до 52 колец",
     "description": "Жёсткие пружинные барабаны для средних и тяжёлых режимов. Поддерживают силовые, управляющие и информационные кабели, наружную установку и специальные исполнения.",
-    "image": "/images/catalogs/av.jpg",
+    "image": "/images/products/Cable-Reels/av-catalog.png",
     "catalog": "/catalogs/Akapp-Cable-reels-series-AV-Technical-info.pdf",
     "specs": [
       {"label": "Ток", "value": "от 4 мА до 200 А и выше"},
@@ -262,7 +262,7 @@
     "subtitle": "Компактный пружинный кабельный барабан",
     "range": "серия AVS28",
     "description": "Компактная серия для установки на крановые тележки и подвижное оборудование, где ограничено монтажное пространство.",
-    "image": "/images/catalogs/avs28.jpg",
+    "image": "/images/products/Cable-Reels/avs28-catalog.png",
     "catalog": "/catalogs/Opisanie_kabelnie_barabany_seriya_AVS28.pdf",
     "specs": [
       {"label": "Привод", "value": "пружинный"},
@@ -278,7 +278,7 @@
     "subtitle": "Пружинный барабан для промышленного оборудования",
     "range": "серия 0951",
     "description": "Серия для электропитания подвижных механизмов, технологических линий, кранов, талей и транспортных тележек.",
-    "image": "/images/catalogs/0951.jpg",
+    "image": "/images/products/Cable-Reels/0951-catalog.png",
     "catalog": "/catalogs/Opisanie_kabelnie_barabany_seriya_0951.pdf",
     "specs": [
       {"label": "Привод", "value": "пружинный"},

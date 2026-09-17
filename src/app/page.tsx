@@ -68,7 +68,7 @@ export default function Home() {
           <div className="hero-visual" aria-label="Каталог шинопроводов AKAPP-STEMMANN">
             <div className="hero-visual-frame">
               <Image
-                src="/images/catalogs/multiconductor.jpg"
+                src="/images/products/Multiconductor/AKAPP-STEMMANN-trollejnij-tokoprovod-Multiconductor.jpg"
                 alt="Каталог закрытого шинопровода Multiconductor"
                 fill
                 priority
