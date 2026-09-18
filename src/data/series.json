@@ -23,6 +23,36 @@
     ]
   },
   {
+    "slug": "tokosemniki",
+    "category": "shinoprovody",
+    "name": "Токосъёмники",
+    "subtitle": "Токосъёмники и угольные щётки AKAPP-STEMMANN в наличии",
+    "range": "35–100 А · 4/7 полюсов",
+    "description": "Складская программа токосъёмников CL7 для Multiconductor и CL4 для 4-Ductor, а также сменных угольных щёток. Позиции из таблицы ниже фактически находятся на складе; количество и срок отгрузки уточняются при запросе.",
+    "image": "/images/products/Токосъемники/1024/cl7-7-35.png",
+    "catalog": "/catalogs/Katalog-Zakrytyj-trollejnyj-tokopodvod-Multiconductor-Akapp-Stemmann.pdf",
+    "specs": [
+      {"label": "Серии", "value": "CL7 для Multiconductor; CL4 для 4-Ductor"},
+      {"label": "Номинальный ток", "value": "35, 70 и 100 А (рабочий режим 60%)"},
+      {"label": "Количество полюсов", "value": "4 или 7 для складских исполнений"},
+      {"label": "Контакт", "value": "пружинящие угольные щётки из бронзоугольного сплава"},
+      {"label": "Скорость CL7", "value": "до 100 м/мин со штатными нейлоновыми роликами"},
+      {"label": "Комплектация", "value": "CL7 стандартно с кабелем; CL4 возможен с кабелем или без него"}
+    ],
+    "models": [
+      {"model": "Токосъёмник с кабелем CL7-7-100", "current": "100 А · 7 полюсов", "application": "в наличии"},
+      {"model": "Токосъёмник с кабелем CL7-7-70", "current": "70 А · 7 полюсов", "application": "в наличии"},
+      {"model": "Токосъёмник CL7-4-35", "current": "35 А · 4 полюса", "application": "в наличии"},
+      {"model": "Каретка токосъёмника CL4-70", "current": "70 А · 4 полюса", "application": "в наличии"},
+      {"model": "Токосъёмник с кабелем CL7-4-70", "current": "70 А · 4 полюса", "application": "в наличии"},
+      {"model": "Токосъёмник с кабелем CL7-7-35", "current": "35 А · 7 полюсов", "application": "в наличии"},
+      {"model": "Каретка токосъёмника CL4-35", "current": "35 А · 4 полюса", "application": "в наличии"},
+      {"model": "Двойная угольная щётка фазная C91D", "current": "CL7 · позиции 4 и 5", "application": "в наличии"},
+      {"model": "Щётка угольная C91A", "current": "CL7 · заземление", "application": "в наличии"},
+      {"model": "Щётка угольная K91P", "current": "CL7 · фазная", "application": "в наличии"}
+    ]
+  },
+  {
     "slug": "pro-ductor",
     "category": "shinoprovody",
     "name": "Pro-Ductor",

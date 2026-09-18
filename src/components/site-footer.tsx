@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CurrentYear } from "@/components/current-year";
 import { Logo } from "@/components/logo";
 
 export function SiteFooter() {
@@ -31,10 +32,11 @@ export function SiteFooter() {
         </div>
       </div>
       <div className="shell footer-bottom">
-        <span>© {new Date().getFullYear()} AKAPP-STEMMANN</span>
+        <span>© <CurrentYear /> ООО Альпарк</span>
         <div>
           <Link href="/privacy/">Политика конфиденциальности</Link>
           <Link href="/consent/">Согласие на обработку данных</Link>
+          <a href="https://b2b-studio.ru/" target="_blank" rel="noreferrer">Разработка сайта — B2B Studio</a>
         </div>
       </div>
     </footer>

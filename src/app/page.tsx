@@ -41,6 +41,8 @@ const faqs = [
 ];
 
 export default function Home() {
+  const currentCollectors = series.find((item) => item.slug === "tokosemniki");
+
   return (
     <>
       <section className="hero-section">
@@ -121,11 +123,31 @@ export default function Home() {
         </div>
       </section>
 
+      {currentCollectors && (
+        <section className="section collector-stock-section">
+          <div className="shell collector-stock-grid">
+            <div className="collector-stock-copy">
+              <p className="eyebrow"><b>02</b> Со склада</p>
+              <h2>Токосъёмники<br />в наличии</h2>
+              <p>CL7 для шинопровода Multiconductor, каретки CL4 для 4-Ductor и сменные угольные щётки AKAPP-STEMMANN. Позиции готовы к комплектации заказа — количество и срок отгрузки подтвердим по запросу.</p>
+              <ul>
+                {currentCollectors.models.slice(0, 6).map((model) => <li key={model.model}><BadgeCheck />{model.model}</li>)}
+              </ul>
+              <div className="collector-stock-actions"><Link className="button button-primary" href="/shinoprovody/tokosemniki/">Все позиции <ArrowRight /></Link><span>10 позиций в складской программе</span></div>
+            </div>
+            <Link className="collector-stock-visual" href="/shinoprovody/tokosemniki/" aria-label="Токосъёмники AKAPP-STEMMANN в наличии">
+              <Image src="/images/products/Токосъемники/1024/tokosemnik-akapp-stemmann-cl4-70-1.jpg" alt="Токосъёмник AKAPP-STEMMANN CL4" fill sizes="(max-width: 900px) 100vw, 44vw" />
+              <span className="stock-stamp"><i /> В наличии</span>
+              <strong>CL4 / CL7</strong>
+            </Link>
+          </div>
+        </section>
+      )}
       <section className="section engineering-section">
         <div className="shell">
           <div className="section-heading section-heading-dark">
             <div>
-              <p className="eyebrow"><b>02</b> Инженерный подход</p>
+              <p className="eyebrow"><b>03</b> Инженерный подход</p>
               <h2>От исходных данных<br />до готовой линии</h2>
             </div>
             <p>Сопровождаем проект на этапах подбора, комплектации и поставки.</p>
@@ -152,7 +174,7 @@ export default function Home() {
         <div className="shell">
           <div className="section-heading">
             <div>
-              <p className="eyebrow"><b>03</b> Применение</p>
+              <p className="eyebrow"><b>04</b> Применение</p>
               <h2>Для непрерывных<br />производственных процессов</h2>
             </div>
             <p>Оборудование для передачи энергии подвижным машинам в промышленности, логистике и грузоподъёмной технике.</p>
@@ -178,7 +200,7 @@ export default function Home() {
       <section className="section support-section">
         <div className="shell support-layout">
           <div>
-            <p className="eyebrow"><b>04</b> Документация</p>
+            <p className="eyebrow"><b>05</b> Документация</p>
             <h2>Технические данные<br />для проектирования</h2>
             <p className="support-lead">
               Каталоги содержат размеры, варианты исполнения, таблицы подбора и перечни комплектующих.
@@ -206,7 +228,7 @@ export default function Home() {
       <section className="section section-light faq-section">
         <div className="shell faq-layout">
           <div className="faq-intro">
-            <p className="eyebrow"><b>05</b> Частые вопросы</p>
+            <p className="eyebrow"><b>06</b> Частые вопросы</p>
             <h2>Перед отправкой запроса</h2>
             <p>Если исходных данных пока недостаточно, специалист поможет их собрать.</p>
             <Link className="text-link" href="#request">Задать вопрос <ArrowRight /></Link>
@@ -226,7 +248,7 @@ export default function Home() {
         <div className="blueprint-grid" aria-hidden="true" />
         <div className="shell request-layout">
           <div className="request-copy">
-            <p className="eyebrow"><b>06</b> Заявка</p>
+            <p className="eyebrow"><b>07</b> Заявка</p>
             <h2>Получите подбор<br />и предложение</h2>
             <p>Опишите задачу в свободной форме. Если потребуется, мы отправим опросный лист на email.</p>
             <div className="direct-contacts">
